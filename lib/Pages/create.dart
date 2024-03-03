@@ -3,6 +3,8 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:knovator/Pages/resume_preview.dart';
 import 'package:knovator/Widgets/my_textfield.dart';
+import 'package:knovator/util/colors.dart';
+import 'package:knovator/util/constants.dart';
 
 import '../globalVariable.dart';
 
@@ -20,6 +22,7 @@ class _CreatePageState extends State<CreatePage> {
 
     return Obx(() {
       return Scaffold(
+        backgroundColor: Color(0xfff2f2f2),
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Create Resume'),
@@ -49,6 +52,10 @@ class _CreatePageState extends State<CreatePage> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
+                MyTextFiled(controller: bio, hint: 'Bio'),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
                 MyTextFiled(controller: mobileNumber, hint: 'Mobile Number'),
                 SizedBox(
                   height: screenSize.height * 0.02,
@@ -68,9 +75,11 @@ class _CreatePageState extends State<CreatePage> {
                 MyTextFiled(controller: address, hint: 'Address'),
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(''),
+                    const Text('Skills'),
+                    Spacer(),
+                    const Text('Add'),
                     IconButton(
                         onPressed: () {
                           skills.add(TextEditingController());
@@ -79,23 +88,96 @@ class _CreatePageState extends State<CreatePage> {
                   ],
                 ),
                 // Si
-                ListView.builder(
+                ReorderableListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: skills.length,
                   shrinkWrap: true,
+                  onReorder: (oldIndex, newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -=
+                          1; // Compensate for the item being removed from the list
+                    }
+                    final TextEditingController item =
+                        skills.removeAt(oldIndex);
+                    skills.insert(newIndex, item);
+                  },
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(bottom: screenSize.height * 0.02),
-                      child: MyTextFiled(
-                          controller: skills[index],
-                          hint: 'Skills ${index + 1}'),
+                    return Row(
+                      key: Key('$index'),
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: screenSize.height * 0.007),
+                          child: Icon(
+                            Icons.drag_indicator,
+                            size: 35,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: screenSize.height * 0.02),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: TextFormField(
+                                  controller: skills[index],
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                    fillColor: colorTextField,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 2, // Border width
+                                        color: Color(
+                                            0xffccebc9), // Focus border color
+                                      ),
+                                      borderRadius: constants.borderRadius,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 12.0, horizontal: 12.0),
+                                    filled: true,
+
+                                    prefixIconConstraints: BoxConstraints(
+                                        minWidth: 0, minHeight: 0),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          skills.removeAt(index);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.red,
+                                        )),
+                                    enabledBorder: InputBorder.none,
+                                    errorStyle: TextStyle(color: Colors.red),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          width: 0, color: Colors.transparent),
+                                      borderRadius: constants.borderRadius,
+                                    ),
+
+                                    // labelText: hint,
+                                    // labelStyle: textStyle.subHeading.copyWith(color: colorDark,fontSize: 20.sp),
+                                  ),
+                                  onSaved: (v) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                  onFieldSubmitted: (v) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              )),
+                        ),
+                      ],
                     );
                   },
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(''),
+                    const Text('Languages'),
+                    Spacer(),
+                    const Text('Add'),
                     IconButton(
                         onPressed: () {
                           languages.add(TextEditingController());
@@ -103,23 +185,96 @@ class _CreatePageState extends State<CreatePage> {
                         icon: const Icon(Icons.add))
                   ],
                 ),
-                ListView.builder(
+                ReorderableListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: languages.length,
                   shrinkWrap: true,
+                  onReorder: (oldIndex, newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -=
+                          1; // Compensate for the item being removed from the list
+                    }
+                    final TextEditingController item =
+                        languages.removeAt(oldIndex);
+                    languages.insert(newIndex, item);
+                  },
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(bottom: screenSize.height * 0.02),
-                      child: MyTextFiled(
-                          controller: languages[index],
-                          hint: 'Languages ${index + 1}'),
+                    return Row(
+                      key: Key('$index'),
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: screenSize.height * 0.007),
+                          child: Icon(
+                            Icons.drag_indicator,
+                            size: 35,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: screenSize.height * 0.02),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: TextFormField(
+                                  controller: languages[index],
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                    fillColor: colorTextField,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 2, // Border width
+                                        color: Color(
+                                            0xffccebc9), // Focus border color
+                                      ),
+                                      borderRadius: constants.borderRadius,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 12.0, horizontal: 12.0),
+                                    filled: true,
+                                    enabledBorder: InputBorder.none,
+
+                                    prefixIconConstraints: BoxConstraints(
+                                        minWidth: 0, minHeight: 0),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          languages.removeAt(index);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.red,
+                                        )),
+                                    errorStyle: TextStyle(color: Colors.red),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          width: 0, color: Colors.transparent),
+                                      borderRadius: constants.borderRadius,
+                                    ),
+
+                                    // labelText: hint,
+                                    // labelStyle: textStyle.subHeading.copyWith(color: colorDark,fontSize: 20.sp),
+                                  ),
+                                  onSaved: (v) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                  onFieldSubmitted: (v) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              )),
+                        ),
+                      ],
                     );
                   },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(''),
+                    const Text('Education'),
+                    Spacer(),
+                    const Text('Add'),
                     IconButton(
                         onPressed: () {
                           education.add(Education(
@@ -131,6 +286,7 @@ class _CreatePageState extends State<CreatePage> {
                   ],
                 ),
                 ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: education.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
@@ -139,7 +295,8 @@ class _CreatePageState extends State<CreatePage> {
                           EdgeInsets.only(bottom: screenSize.height * 0.02),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.grey,
+                            border:
+                                Border.all(color: Color(0xffccebc9), width: 2),
                             borderRadius:
                                 BorderRadius.circular(screenSize.width * 0.02)),
                         child: Padding(
@@ -165,9 +322,11 @@ class _CreatePageState extends State<CreatePage> {
                   },
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(''),
+                    const Text('Experience'),
+                    Spacer(),
+                    const Text('Add'),
                     Padding(
                       padding: EdgeInsets.zero,
                       child: IconButton(
@@ -180,10 +339,11 @@ class _CreatePageState extends State<CreatePage> {
                             ));
                           },
                           icon: const Icon(Icons.add)),
-                    )
+                    ),
                   ],
                 ),
                 ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: experience.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
@@ -192,7 +352,8 @@ class _CreatePageState extends State<CreatePage> {
                           EdgeInsets.only(bottom: screenSize.height * 0.02),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.grey,
+                            border:
+                                Border.all(color: Color(0xffccebc9), width: 2),
                             borderRadius:
                                 BorderRadius.circular(screenSize.width * 0.02)),
                         child: Padding(
@@ -228,6 +389,7 @@ class _CreatePageState extends State<CreatePage> {
 
 TextEditingController firstName = TextEditingController();
 TextEditingController lastName = TextEditingController();
+TextEditingController bio = TextEditingController();
 TextEditingController designation = TextEditingController();
 TextEditingController mobileNumber = TextEditingController();
 TextEditingController email = TextEditingController();

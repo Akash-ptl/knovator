@@ -87,11 +87,19 @@ class MyTextFiled extends StatelessWidget {
             style: style,
             decoration: InputDecoration(
               fillColor: colorTextField,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 2, // Border width
+                  color: Color(0xffccebc9), // Focus border color
+                ),
+                borderRadius: constants.borderRadius,
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
               filled: true,
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
               enabledBorder: InputBorder.none,
-
               errorText: errorText,
               errorStyle: TextStyle(color: Colors.red),
               border: OutlineInputBorder(

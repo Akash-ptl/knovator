@@ -35,6 +35,25 @@ class PdfPreviewPage extends StatefulWidget {
 }
 
 class _PdfPreviewPageState extends State<PdfPreviewPage> {
+  void initState() {
+    // Call the superclass initState() method
+    super.initState();
+    fonts();
+    // Perform initialization tasks here
+    // For example, you can load data from a database, initialize variables, etc.
+    // This code will be executed only once when the widget is first inserted into the widget tree
+  }
+
+  Uint8List? fontBytes;
+  ByteData? fontByteData;
+  Future<void> fonts() async {
+    fontByteData = await rootBundle.load('images/Helvetica.ttf');
+    fontBytes = fontByteData?.buffer.asUint8List();
+
+    // final ByteData pdfByteData = await generatePdf(fontBytes);
+    // final Uint8List pdfBytes = pdfByteData.buffer.asUint8List();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +66,10 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
     );
   }
 
+  ///1d990e
   Future<Uint8List> makePdf() async {
+    var screenSize = MediaQuery.of(context).size;
+
     final pdf = pw.Document();
     // final ByteData bytes = await rootBundle.load('assets/phone.png');
     // final Uint8List byteList = bytes.buffer.asUint8List();
@@ -62,10 +84,27 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text("${firstName.text} ${lastName.text}",
-                          style: const pw.TextStyle(fontSize: 30)),
-                      pw.Text("${designation.text}"),
-
+                      pw.Text(
+                        "${firstName.text} ${lastName.text}",
+                        style: pw.TextStyle(
+                          font: pw.Font.ttf(fontByteData!),
+                          fontSize: 20,
+                        ),
+                      ),
+                      pw.Text(
+                        "${designation.text}",
+                        style: pw.TextStyle(
+                            font: pw.Font.ttf(fontByteData!),
+                            fontSize: 16,
+                            color: PdfColors.grey),
+                      ),
+                      pw.Text(
+                        "${bio.text}",
+                        style: pw.TextStyle(
+                          font: pw.Font.ttf(fontByteData!),
+                          fontSize: 14,
+                        ),
+                      ),
                       // pw.Image(pw.MemoryImage(byteList),
                       // fit: pw.BoxFit.fitHeight, height: 100, width: 100)
                     ]),
@@ -86,8 +125,16 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                         child: pw.Column(
                             crossAxisAlignment: pw.CrossAxisAlignment.start,
                             children: [
-                              pw.Text("Contact",
-                                  style: const pw.TextStyle(fontSize: 20)),
+                              pw.Container(
+                                padding: pw.EdgeInsets.symmetric(
+                                    vertical: screenSize.height * 0.003,
+                                    horizontal: screenSize.height * 0.009),
+                                decoration: pw.BoxDecoration(
+                                    color: PdfColor.fromHex('1d990e')),
+                                child: pw.Text("Contact",
+                                    style: const pw.TextStyle(
+                                        fontSize: 16, color: PdfColors.white)),
+                              ),
                               pw.SizedBox(height: 5),
                               pw.Text("${mobileNumber.text}",
                                   style: const pw.TextStyle(fontSize: 14)),
@@ -108,8 +155,16 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                                 // indent: 10, // Adjust as needed
                               ),
                               pw.SizedBox(height: 5),
-                              pw.Text("Skills",
-                                  style: const pw.TextStyle(fontSize: 20)),
+                              pw.Container(
+                                padding: pw.EdgeInsets.symmetric(
+                                    vertical: screenSize.height * 0.003,
+                                    horizontal: screenSize.height * 0.009),
+                                decoration: pw.BoxDecoration(
+                                    color: PdfColor.fromHex('1d990e')),
+                                child: pw.Text("Skills",
+                                    style: const pw.TextStyle(
+                                        fontSize: 16, color: PdfColors.white)),
+                              ),
                               pw.SizedBox(height: 5),
                               pw.Wrap(
                                 direction: pw.Axis.vertical,
@@ -133,8 +188,16 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                                 // indent: 10, // Adjust as needed
                               ),
                               pw.SizedBox(height: 5),
-                              pw.Text("Languages",
-                                  style: const pw.TextStyle(fontSize: 20)),
+                              pw.Container(
+                                padding: pw.EdgeInsets.symmetric(
+                                    vertical: screenSize.height * 0.003,
+                                    horizontal: screenSize.height * 0.009),
+                                decoration: pw.BoxDecoration(
+                                    color: PdfColor.fromHex('1d990e')),
+                                child: pw.Text("Languages",
+                                    style: const pw.TextStyle(
+                                        fontSize: 16, color: PdfColors.white)),
+                              ),
                               pw.SizedBox(height: 5),
                               pw.Wrap(
                                 direction: pw.Axis.vertical,
@@ -156,8 +219,16 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                               mainAxisAlignment: pw.MainAxisAlignment.start,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                            pw.Text("Work Experience",
-                                style: const pw.TextStyle(fontSize: 20)),
+                            pw.Container(
+                              padding: pw.EdgeInsets.symmetric(
+                                  vertical: screenSize.height * 0.003,
+                                  horizontal: screenSize.height * 0.009),
+                              decoration: pw.BoxDecoration(
+                                  color: PdfColor.fromHex('1d990e')),
+                              child: pw.Text("Work Experience",
+                                  style: const pw.TextStyle(
+                                      fontSize: 16, color: PdfColors.white)),
+                            ),
                             pw.SizedBox(height: 5),
                             pw.Wrap(
                               direction: pw.Axis.vertical,
@@ -172,19 +243,25 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                                           children: [
                                             pw.Text(
                                               "${experience[index].companyName.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
                                             pw.Text(
                                               "${experience[index].title.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
                                             pw.Text(
                                               "${experience[index].year.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
@@ -199,8 +276,16 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                               // indent: 10, // Adjust as needed
                             ),
                             pw.SizedBox(height: 5),
-                            pw.Text("Education",
-                                style: const pw.TextStyle(fontSize: 20)),
+                            pw.Container(
+                              padding: pw.EdgeInsets.symmetric(
+                                  vertical: screenSize.height * 0.003,
+                                  horizontal: screenSize.height * 0.009),
+                              decoration: pw.BoxDecoration(
+                                  color: PdfColor.fromHex('1d990e')),
+                              child: pw.Text("Education",
+                                  style: const pw.TextStyle(
+                                      fontSize: 16, color: PdfColors.white)),
+                            ),
                             pw.SizedBox(height: 5),
                             pw.Wrap(
                               direction: pw.Axis.vertical,
@@ -215,19 +300,25 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                                           children: [
                                             pw.Text(
                                               "${education[index].schoolCollage.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
                                             pw.Text(
                                               "${education[index].title.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
                                             pw.Text(
                                               "${education[index].year.text}",
-                                              style: const pw.TextStyle(
+                                              style: pw.TextStyle(
+                                                  font: pw.Font.ttf(
+                                                      fontByteData!),
                                                   fontSize: 14),
                                               textAlign: pw.TextAlign.start,
                                             ),
@@ -235,13 +326,6 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                             ),
                           ])),
                     ]),
-                pw.Divider(
-                  color: PdfColors.black,
-                  thickness: 1,
-                  height: 5,
-                  endIndent: 10, // Adjust as needed
-                  // indent: 10, // Adjust as needed
-                ),
                 pw.SizedBox(height: 5),
               ]);
         }));
