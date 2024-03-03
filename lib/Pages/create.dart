@@ -3,7 +3,8 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:knovator/Pages/resume_preview.dart';
 import 'package:knovator/Widgets/my_textfield.dart';
-import 'package:knovator/globalVariable.dart';
+
+import '../globalVariable.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({super.key});
@@ -13,31 +14,6 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
-  TextEditingController designation = TextEditingController();
-  TextEditingController mobileNumber = TextEditingController();
-  TextEditingController eamil = TextEditingController();
-  TextEditingController github = TextEditingController();
-  TextEditingController linkedIn = TextEditingController();
-  TextEditingController address = TextEditingController();
-  RxList<TextEditingController> skills =
-      <TextEditingController>[TextEditingController()].obs;
-  RxList<TextEditingController> languages =
-      <TextEditingController>[TextEditingController()].obs;
-  RxList<Education> education = <Education>[
-    Education(
-        schoolCollage: TextEditingController(),
-        year: TextEditingController(),
-        title: TextEditingController())
-  ].obs;
-  RxList<Experience> experience = <Experience>[
-    Experience(
-        year: TextEditingController(),
-        title: TextEditingController(),
-        companyName: TextEditingController())
-  ].obs;
-
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -46,19 +22,19 @@ class _CreatePageState extends State<CreatePage> {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('Create Resume'),
+          title: const Text('Create Resume'),
           actions: [
             IconButton(
-                onPressed: () {
-                  nextPage(context, ResumePreview());
+                onPressed: () async {
+                  nextPage(context, const PdfPreviewPage());
                 },
-                icon: Icon(Icons.save))
+                icon: const Icon(Icons.save))
           ],
         ),
         body: Padding(
           padding: EdgeInsets.all(screenSize.width * 0.03),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 MyTextFiled(controller: firstName, hint: 'First Name'),
@@ -69,27 +45,27 @@ class _CreatePageState extends State<CreatePage> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'Main Title'),
+                MyTextFiled(controller: designation, hint: 'Main Title'),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'Mobile Number'),
+                MyTextFiled(controller: mobileNumber, hint: 'Mobile Number'),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'Email'),
+                MyTextFiled(controller: email, hint: 'Email'),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'LinkedIn'),
+                MyTextFiled(controller: linkedIn, hint: 'LinkedIn'),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'GitHub'),
+                MyTextFiled(controller: github, hint: 'GitHub'),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                MyTextFiled(controller: lastName, hint: 'Address'),
+                MyTextFiled(controller: address, hint: 'Address'),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,7 +75,7 @@ class _CreatePageState extends State<CreatePage> {
                         onPressed: () {
                           skills.add(TextEditingController());
                         },
-                        icon: Icon(Icons.add))
+                        icon: const Icon(Icons.add))
                   ],
                 ),
                 // Si
@@ -124,7 +100,7 @@ class _CreatePageState extends State<CreatePage> {
                         onPressed: () {
                           languages.add(TextEditingController());
                         },
-                        icon: Icon(Icons.add))
+                        icon: const Icon(Icons.add))
                   ],
                 ),
                 ListView.builder(
@@ -151,7 +127,7 @@ class _CreatePageState extends State<CreatePage> {
                               year: TextEditingController(),
                               title: TextEditingController()));
                         },
-                        icon: Icon(Icons.add))
+                        icon: const Icon(Icons.add))
                   ],
                 ),
                 ListView.builder(
@@ -203,7 +179,7 @@ class _CreatePageState extends State<CreatePage> {
                               title: TextEditingController(),
                             ));
                           },
-                          icon: Icon(Icons.add)),
+                          icon: const Icon(Icons.add)),
                     )
                   ],
                 ),
@@ -249,6 +225,31 @@ class _CreatePageState extends State<CreatePage> {
     });
   }
 }
+
+TextEditingController firstName = TextEditingController();
+TextEditingController lastName = TextEditingController();
+TextEditingController designation = TextEditingController();
+TextEditingController mobileNumber = TextEditingController();
+TextEditingController email = TextEditingController();
+TextEditingController github = TextEditingController();
+TextEditingController linkedIn = TextEditingController();
+TextEditingController address = TextEditingController();
+RxList<TextEditingController> skills =
+    <TextEditingController>[TextEditingController()].obs;
+RxList<TextEditingController> languages =
+    <TextEditingController>[TextEditingController()].obs;
+RxList<Education> education = <Education>[
+  Education(
+      schoolCollage: TextEditingController(),
+      year: TextEditingController(),
+      title: TextEditingController())
+].obs;
+RxList<Experience> experience = <Experience>[
+  Experience(
+      year: TextEditingController(),
+      title: TextEditingController(),
+      companyName: TextEditingController())
+].obs;
 
 class Education {
   TextEditingController schoolCollage;
