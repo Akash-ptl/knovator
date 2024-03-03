@@ -22,7 +22,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:knovator/Models/resume_model.dart';
 import 'package:knovator/Pages/create.dart';
+import 'package:knovator/Pages/home.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -58,7 +60,38 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('PDF Preview'),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                getResumeList.add(UserData(
+                    firstName: firstName,
+                    lastName: lastName,
+                    bio: bio,
+                    designation: designation,
+                    mobileNumber: mobileNumber,
+                    email: email,
+                    github: github,
+                    linkedIn: linkedIn,
+                    address: address,
+                    skills: skills,
+                    languages: languages,
+                    education: education,
+                    experience: experience));
+                await saveResumeList(getResumeList).then((value) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyHomePage(),
+                      ),
+                      (route) => false);
+                });
+              },
+              icon: Icon(
+                Icons.save,
+              ))
+        ],
       ),
       body: PdfPreview(
         build: (context) => makePdf(),
@@ -136,15 +169,29 @@ class _PdfPreviewPageState extends State<PdfPreviewPage> {
                                         fontSize: 16, color: PdfColors.white)),
                               ),
                               pw.SizedBox(height: 5),
-                              pw.Text("${mobileNumber.text}",
+                              // pw.SizedBox(height: 5),
+                              // pw.Wrap(
+                              //   direction: pw.Axis.vertical,
+                              //   // spacing: 8.0, // Adjust as needed
+                              //   runSpacing: 8.0, // Adjust as needed
+                              //   children: List.generate(
+                              //     contacts.length,
+                              //     (index) => pw.Text(
+                              //       "${contacts[index].text}",
+                              //       style: const pw.TextStyle(fontSize: 14),
+                              //       textAlign: pw.TextAlign.start,
+                              //     ),
+                              //   ),
+                              // ),
+                              pw.Text("${contacts[0].text}",
                                   style: const pw.TextStyle(fontSize: 14)),
-                              pw.Text("${email.text}",
+                              pw.Text("${contacts[1].text}",
                                   style: const pw.TextStyle(fontSize: 14)),
-                              pw.Text("${linkedIn.text}",
+                              pw.Text("${contacts[2].text}",
                                   style: const pw.TextStyle(fontSize: 14)),
-                              pw.Text("${address.text}",
+                              pw.Text("${contacts[3].text}",
                                   style: const pw.TextStyle(fontSize: 14)),
-                              pw.Text("${github.text}",
+                              pw.Text("${contacts[4].text}",
                                   style: const pw.TextStyle(fontSize: 14)),
                               pw.SizedBox(height: 5),
                               pw.Divider(

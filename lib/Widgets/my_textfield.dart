@@ -88,20 +88,20 @@ class MyTextFiled extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: colorTextField,
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   width: 2, // Border width
                   color: Color(0xffccebc9), // Focus border color
                 ),
                 borderRadius: constants.borderRadius,
               ),
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
               filled: true,
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
               enabledBorder: InputBorder.none,
               errorText: errorText,
-              errorStyle: TextStyle(color: Colors.red),
+              errorStyle: const TextStyle(color: Colors.red),
               border: OutlineInputBorder(
                 borderSide:
                     const BorderSide(width: 0, color: Colors.transparent),
